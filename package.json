@@ -1,0 +1,21 @@
+{
+  "name": "pitwise",
+  "version": "0.0.0",
+  "description": "PitWise - Self-hosted fuel & maintenance tracker for family vehicles - NestJS, Vue, Postgres, Keycloak, Docker.",
+  "homepage": "https://github.com/laszlo-gazsi/pitwise#readme",
+  "bugs": {
+    "url": "https://github.com/laszlo-gazsi/pitwise/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laszlo-gazsi/pitwise.git"
+  },
+  "license": "MIT",
+  "author": "Laszlo Gazsi",
+  "packageManager": "pnpm@12.22.0",
+  "private": true,
+  "scripts": {
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  }
+}
