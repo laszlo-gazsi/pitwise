@@ -14,7 +14,11 @@ import { UpdateVehicleDto } from './dto/update-vehicle.dto.js';
 
 @Controller('vehicles')
 export class VehiclesController {
-  constructor(private readonly vehiclesService: VehiclesService) {}
+  private readonly vehiclesService;
+
+  constructor(vehiclesService: VehiclesService) {
+    this.vehiclesService = vehiclesService;
+  }
 
   @Post()
   create(@Body() createVehicleDto: CreateVehicleDto) {
@@ -32,7 +36,10 @@ export class VehiclesController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateVehicleDto: UpdateVehicleDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateVehicleDto: UpdateVehicleDto,
+  ) {
     return this.vehiclesService.update(id, updateVehicleDto);
   }
 
