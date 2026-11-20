@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// model User {
+//   id         Int       @id @default(autoincrement())
+//   externalId String    @unique
+//   email      String    @unique
+//   isAdmin    Boolean   @default(false)
+//   vehicles   Vehicle[]
+//   createdAt  DateTime  @default(now())
+// }
+
+model Vehicle {
+  id           Int      @id @default(autoincrement())
+  licensePlate String?  @map("license_plate")
+  name         String?
+  vin          String?  @db.VarChar(17)
+  make         Make?    @relation(fields: [makeId], references: [id], onDelete: Restrict)
+  makeId       Int?     @map("make_id")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([makeId])
+  @@map("vehicles")
+}
+
+model Make {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  vehicles Vehicle[]
+
+  @@map("makes")
+}
