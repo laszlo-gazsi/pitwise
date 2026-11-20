@@ -12,12 +12,18 @@
   },
   "license": "MIT",
   "author": "Laszlo Gazsi",
-  "packageManager": "pnpm@12.22.0",
   "private": true,
   "scripts": {
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "dev:api": "pnpm --filter api start:dev",
-    "dev:web": ""
+    "dev:api": "npm run start:dev -w api"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "allowScripts": {
+    "prisma@7.10.1": true,
+    "@prisma/engines@7.10.1": true
   }
 }
