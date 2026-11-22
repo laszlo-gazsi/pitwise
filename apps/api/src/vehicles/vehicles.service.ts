@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
+import { isForeignKeyConflictError } from '../prisma/isError.fn.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateVehicleDto } from './dto/create-vehicle.dto.js';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto.js';
@@ -11,26 +16,58 @@ export class VehiclesService {
     this.prismaService = prismaService;
   }
 
-  create(createVehicleDto: CreateVehicleDto) {
-    return this.prismaService.vehicle.create({ data: createVehicleDto });
+  async create(createVehicleDto: CreateVehicleDto) {
+    try {
+      return await this.prismaService.vehicle.create({
+        data: createVehicleDto,
+      });
+    } catch (e) {
+      if (isForeignKeyConflictError(e)) {
+        throw new BadRequestException(
+          `Make id "${createVehicleDto.makeId}" does not exist!`,
+        );
+      }
+      throw e;
+    }
   }
 
   findAll() {
     return this.prismaService.vehicle.findMany();
   }
 
-  findOne(id: number) {
-    return this.prismaService.vehicle.findUnique({ where: { id } });
-  }
-
-  update(id: number, updateVehicleDto: UpdateVehicleDto) {
-    return this.prismaService.vehicle.update({
+  async findOne(id: number) {
+    const result = await this.prismaService.vehicle.findUnique({
       where: { id },
-      data: updateVehicleDto,
     });
+
+    if (!result) {
+      throw new NotFoundException(`Vehicle ${id} not found!`);
+    }
+
+    return result;
   }
 
-  remove(id: number) {
-    return this.prismaService.vehicle.delete({ where: { id } });
+  async update(id: number, updateVehicleDto: UpdateVehicleDto) {
+    await this.findOne(id);
+
+    try {
+      return await this.prismaService.vehicle.update({
+        where: { id },
+        data: updateVehicleDto,
+      });
+    } catch (e) {
+      if (isForeignKeyConflictError(e)) {
+        throw new BadRequestException(
+          `Make id ${updateVehicleDto.makeId} does not exist!`,
+        );
+      }
+      throw e;
+    }
+  }
+
+  async remove(id: number) {
+    await this.findOne(id);
+
+    return await this.prismaService.vehicle.delete({ where: { id } });
   }
 }
