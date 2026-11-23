@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { isForeignKeyConflictError } from '../prisma/isError.fn.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateVehicleDto } from './dto/create-vehicle.dto.js';
@@ -20,24 +16,24 @@ export class VehiclesService {
     try {
       return await this.prismaService.vehicle.create({
         data: createVehicleDto,
+        include: { make: true },
       });
     } catch (e) {
       if (isForeignKeyConflictError(e)) {
-        throw new BadRequestException(
-          `Make id "${createVehicleDto.makeId}" does not exist!`,
-        );
+        throw new BadRequestException(`Make id "${createVehicleDto.makeId}" does not exist!`);
       }
       throw e;
     }
   }
 
   findAll() {
-    return this.prismaService.vehicle.findMany();
+    return this.prismaService.vehicle.findMany({ include: { make: true } });
   }
 
   async findOne(id: number) {
     const result = await this.prismaService.vehicle.findUnique({
       where: { id },
+      include: { make: true },
     });
 
     if (!result) {
@@ -54,12 +50,11 @@ export class VehiclesService {
       return await this.prismaService.vehicle.update({
         where: { id },
         data: updateVehicleDto,
+        include: { make: true },
       });
     } catch (e) {
       if (isForeignKeyConflictError(e)) {
-        throw new BadRequestException(
-          `Make id ${updateVehicleDto.makeId} does not exist!`,
-        );
+        throw new BadRequestException(`Make id ${updateVehicleDto.makeId} does not exist!`);
       }
       throw e;
     }

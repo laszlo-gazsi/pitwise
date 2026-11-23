@@ -1,15 +1,8 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateMakeDto } from './dto/create-make.dto.js';
 import { UpdateMakeDto } from './dto/update-make.dto.js';
-import {
-  isForeignKeyConflictError,
-  isUniqueConflictError,
-} from '../prisma/isError.fn.js';
+import { isForeignKeyConflictError, isUniqueConflictError } from '../prisma/isError.fn.js';
 
 @Injectable()
 export class MakesService {
@@ -54,9 +47,7 @@ export class MakesService {
       });
     } catch (e) {
       if (isUniqueConflictError(e)) {
-        throw new ConflictException(
-          `Make ${updateMakeDto.name} already exists!`,
-        );
+        throw new ConflictException(`Make ${updateMakeDto.name} already exists!`);
       }
       throw e;
     }

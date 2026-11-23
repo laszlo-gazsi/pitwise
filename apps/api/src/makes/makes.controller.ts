@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateMakeDto } from './dto/create-make.dto.js';
 import { UpdateMakeDto } from './dto/update-make.dto.js';
 import { MakesService } from './makes.service.js';
@@ -36,10 +27,7 @@ export class MakesController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateMakeDto: UpdateMakeDto,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateMakeDto: UpdateMakeDto) {
     return this.makesService.update(id, updateMakeDto);
   }
 

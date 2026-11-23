@@ -16,7 +16,8 @@
   "scripts": {
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "dev:api": "npm run start:dev -w api"
+    "dev:api": "npm run start:dev -w api",
+    "dev:web": "npm run dev -w web"
   },
   "workspaces": [
     "apps/*",
@@ -24,6 +25,7 @@
   ],
   "allowScripts": {
     "prisma@7.10.1": true,
-    "@prisma/engines@7.10.1": true
+    "@prisma/engines@7.10.1": true,
+    "esbuild@0.28.2": true
   }
 }

@@ -6,11 +6,7 @@ import { VehiclesModule } from './vehicles/vehicles.module.js';
 import { MakesModule } from './makes/makes.module.js';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    VehiclesModule,
-    MakesModule,
-  ],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), VehiclesModule, MakesModule],
   controllers: [AppController],
   providers: [AppService],
 })
