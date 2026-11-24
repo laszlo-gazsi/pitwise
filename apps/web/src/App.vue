@@ -1,25 +1,9 @@
-<script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getMakes } from './api/make.service';
-import type { Make } from './types/make';
-import type { Vehicle } from './types/vehicle';
-import { getVehicles } from './api/vehicle.service';
-
-const makes = ref<Make[] | null>(null);
-const vehicles = ref<Vehicle[] | null>(null);
-
-onMounted(async () => {
-  makes.value = await getMakes();
-  vehicles.value = await getVehicles();
-});
-</script>
-
 <template>
-  <p>Test Makes</p>
-  {{ makes }}
-
-  <p>Test Makes</p>
-  {{ vehicles }}
+  <nav>
+    <router-link to="/vehicles">Vehicles</router-link>
+    <router-link to="/makes">Makes</router-link>
+  </nav>
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

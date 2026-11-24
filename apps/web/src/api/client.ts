@@ -15,7 +15,7 @@ const request = async <T>(method: string, path: string, body?: unknown): Promise
 
   if (!response.ok) {
     const error = await response.json().catch(() => null);
-    throw new ApiError(response.status, error.message ?? response.statusText);
+    throw new ApiError(response.status, error?.message ?? response.statusText);
   }
 
   return response.status === 204 ? (undefined as T) : await response.json();
@@ -23,7 +23,7 @@ const request = async <T>(method: string, path: string, body?: unknown): Promise
 
 export const api = {
   get: <T>(path: string) => request<T>('GET', path),
-  post: <T>(path: string, body: unknown) => request('POST', path, body),
-  patch: <T>(path: string, body: unknown) => request('PATCH', path, body),
-  delete: <T>(path: string) => request('DELETE', path),
+  post: <T>(path: string, body: unknown) => request<T>('POST', path, body),
+  patch: <T>(path: string, body: unknown) => request<T>('PATCH', path, body),
+  delete: <T>(path: string) => request<T>('DELETE', path),
 };
