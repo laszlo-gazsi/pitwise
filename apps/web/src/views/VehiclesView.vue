@@ -4,7 +4,12 @@
   <div v-else-if="error">Error loading vehicles...</div>
   <div v-else-if="vehicles && !vehicles.length">No vehicles found...</div>
   <div v-else>
-    <VehicleCard v-for="vehicle in vehicles" :key="vehicle.id" v-bind="vehicle" />
+    <VehicleCard
+      v-for="vehicle in vehicles"
+      :key="vehicle.id"
+      v-bind="vehicle"
+      @remove="remove(vehicle.id)"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -15,7 +20,7 @@ import { onMounted } from 'vue';
 
 const vehiclesStore = useVehiclesStore();
 const { isLoading, error, vehicles } = storeToRefs(vehiclesStore);
-const { getAll } = vehiclesStore;
+const { getAll, remove } = vehiclesStore;
 
 onMounted(getAll);
 </script>

@@ -1,4 +1,4 @@
-import { getMakes } from '@/api/make.service';
+import { deleteMake, getMakes } from '@/api/make.service';
 import type { Make } from '@/types/make';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -21,10 +21,26 @@ export const useMakesStore = defineStore('makes', () => {
     }
   };
 
+  const remove = async (id: number) => {
+    try {
+      error.value = null;
+      isLoading.value = true;
+      const deletedMake = await deleteMake(id);
+      if (makes.value) {
+        makes.value = makes.value.filter((make) => make.id !== deletedMake.id);
+      }
+    } catch (e) {
+      error.value = e as Error;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   return {
     isLoading,
     error,
     makes,
     getAll,
+    remove,
   };
 });
