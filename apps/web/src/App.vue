@@ -1,9 +1,13 @@
 <template>
-  <nav>
-    <router-link to="/vehicles">Vehicles</router-link>
-    <router-link to="/makes">Makes</router-link>
-  </nav>
-  <router-view></router-view>
+  <v-app>
+    <v-app-bar title="PitWise">
+      <v-btn to="/vehicles">Vehicles</v-btn>
+      <v-btn to="/makes">Makes</v-btn>
+    </v-app-bar>
+    <v-main>
+      <v-container>
+        <router-view />
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
-
-<style scoped></style>
