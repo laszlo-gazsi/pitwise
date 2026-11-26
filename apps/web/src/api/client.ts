@@ -1,3 +1,5 @@
+import keycloak from '@/auth/keycloak';
+
 export class ApiError extends Error {
   public status: number;
   constructor(status: number, message: string) {
@@ -6,10 +8,23 @@ export class ApiError extends Error {
   }
 }
 
+const refreshToken = async () => {
+  try {
+    await keycloak.updateToken(30);
+  } catch (e) {
+    await keycloak.login();
+    throw e;
+  }
+};
+
 const request = async <T>(method: string, path: string, body?: unknown): Promise<T> => {
+  await refreshToken();
+
+  const headers = { Authorization: `Bearer ${keycloak.token}` };
+
   const response = await fetch(path, {
     method,
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    headers: body ? { ...headers, 'Content-Type': 'application/json' } : headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 
