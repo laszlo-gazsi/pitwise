@@ -5,14 +5,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Root',
       redirect: '/vehicles',
     },
     {
       path: '/makes',
+      name: 'Makes',
       component: () => import('@/views/MakesView.vue'),
     },
     {
       path: '/vehicles',
+      name: 'Vehicles',
       component: () => import('@/views/VehiclesView.vue'),
     },
   ],
