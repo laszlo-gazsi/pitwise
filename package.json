@@ -18,7 +18,8 @@
     "services:down": "docker compose down",
     "kc:reset": "docker compose rm -sf keycloak && docker volume rm pitwise_kcdata && docker compose up -d keycloak",
     "dev:api": "npm run start:dev -w api",
-    "dev:web": "npm run dev -w web"
+    "dev:web": "npm run dev -w web",
+    "format": "npm run format --workspaces --if-present"
   },
   "workspaces": [
     "apps/*",
