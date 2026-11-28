@@ -29,6 +29,10 @@ const request = async <T>(method: string, path: string, body?: unknown): Promise
   });
 
   if (!response.ok) {
+    if (response.status === 401) {
+      await keycloak.login();
+    }
+
     const error = await response.json().catch(() => null);
     throw new ApiError(response.status, error?.message ?? response.statusText);
   }
